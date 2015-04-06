@@ -1,0 +1,12 @@
+Package: IntentionalBinding
+Type: Package
+Title: Tools for analysing 'Intentional Binding' paradigm with libet's clock 
+Version: 1.0
+Date: 2015-04-04
+Author: Sunil V Kalmady
+Maintainer:  Ganesan Venkatasubramanian  <venkat.nimhans@gmail.com>
+Description: Data analysis and reporting for e-prime data of Intentional Binding cognitive paradigm [such as Voss etal, Brain 2010]
+License: GPL
+LazyData: true
+Imports: MASS, plyr, gridExtra, grid, markdown, knitr
+Depends: ggplot2

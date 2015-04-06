@@ -1,0 +1,134 @@
+---
+title: "Intentional Binding Report - Single Subject"
+author: "Transpsychlab (www.transpsychlab.org)"
+output:
+  html_document:
+    theme: united
+---
+
+This is a single subject report for Intentional Binding paradigm [Brain 2010].
+
+**Data:** `r fname`
+
+**Trails with missing data**: `r length(sumdata$CleanTrial[sumdata$CleanTrial == FALSE]) `
+
+###Baseline corrected judgement error
+
+**Independent sample t test - effect of tone presence**
+```{r, echo = FALSE, comment="  "}
+t.test(JudgeErrorBL~TonePresence,data = sumdata)
+```
+
+```{r, echo = FALSE, comment="  ",fig.width =5, fig.height=6,fig.align ='center', warning=FALSE}
+sumdataSE1 <- summarySE(sumdata, measurevar="JudgeErrorBL", groupvars="TonePresence", na.rm = TRUE)
+ggplot(data=sumdataSE1, aes(x=TonePresence, y=JudgeErrorBL, fill=TonePresence)) +  geom_bar(position=position_dodge(), stat="identity") + geom_errorbar(aes(ymin=JudgeErrorBL-se, ymax=JudgeErrorBL+se), width=.2, position=position_dodge(.9)) + geom_point(pch=21, col="black", cex = 4, aes(colour = TonePresence)) + geom_hline(yintercept=0) + ggtitle("All Trials: Effect of tone presence\nBar plot showing means & standard errors") + xlab("Presence of Tone") +  ylab("Mean Shift from Baseline [ms]") + scale_fill_brewer(palette="Set1", name="Presence of Tone", breaks=c("TRUE", "FALSE"), labels=c("Tone", "No-Tone")) +  theme(axis.title = element_text(face="bold", size=12), axis.text  = element_text(face="bold", size=10), axis.ticks = element_blank())
+```
+
+**ANOVA - effect of tone probability [all 3 blocks - 0%, 50%, 75%]**
+```{r, echo = FALSE, comment="  "}
+summary(aov(JudgeErrorBL ~ Block,data = sumdata))
+```
+
+**Independent sample t test - effect of tone probability [2 blocks - 50%, 75%]**
+```{r, echo = FALSE, comment="  "}
+t.test(JudgeErrorBL ~ Block,data = subset(sumdata, Block != "Tone0Trials"))
+```
+
+```{r, echo = FALSE, comment="  ",fig.width =5, fig.height=6,fig.align ='center', warning=FALSE}
+sumdataSE2 <- summarySE(sumdata, measurevar="JudgeErrorBL", groupvars="Block", na.rm = TRUE)
+ggplot(data=sumdataSE2, aes(x=Block, y=JudgeErrorBL, fill=Block)) +  geom_bar(position=position_dodge(), stat="identity") + geom_errorbar(aes(ymin=JudgeErrorBL-se, ymax=JudgeErrorBL+se), width=.2, position=position_dodge(.9)) + geom_point(pch=21, col="black", cex = 4, aes(colour = Block)) + geom_hline(yintercept=0) + ggtitle("All Trials: Effect of tone probability\nBar plot showing means & standard errors") + xlab("Experimental Condition - Probability of Tone") +  ylab("Mean Shift from Baseline [ms]") + scale_fill_brewer(palette="Set1", name="Probability of Tone", breaks=c("Tone0Trials","Tone50Trials", "Tone75Trials"), labels=c("0%", "50%", "75%")) +  theme(axis.title = element_text(face="bold", size=12), axis.text.y  = element_text(face="bold", size=10), axis.text.x=element_blank(),axis.ticks = element_blank())
+```
+
+###Baseline corrected judgement error in 'without tone' trials
+
+**ANOVA - effect of tone probability [all 3 blocks - 0%, 50%, 75%]**  
+```{r, echo = FALSE, comment="  "}
+summary(aov(JudgeErrorBL ~ Block,data = subset(sumdata, TonePresence == FALSE)))
+```
+
+**Independent sample t test - effect of tone probability [2 blocks - 50%, 75%]**
+```{r, echo = FALSE, comment="  "}
+t.test(JudgeErrorBL~Block,data = subset(sumdata, (TonePresence == FALSE & Block != "Tone0Trials")))
+```
+
+###Baseline corrected judgement error in 'with tone' trials
+
+**ANOVA - effect of tone probability [all 3 blocks - 0%, 50%, 75%]**
+```{r, echo = FALSE, comment="  "}
+summary(aov(JudgeErrorBL ~ Block,data = subset(sumdata, TonePresence == TRUE)))
+```
+
+**Independent sample t test - effect of tone probability [2 blocks - 50%, 75%]**
+```{r, echo = FALSE, comment="  "}
+t.test(JudgeErrorBL~Block,data = subset(sumdata, (TonePresence == TRUE & Block != "Tone0Trials")))
+```
+
+```{r, echo = FALSE, comment="  ",fig.width =8, fig.height=6,fig.align ='center', warning=FALSE}
+sumdataSE3 <- summarySE(sumdata, measurevar="JudgeErrorBL", groupvars=c("TonePresence","Block"), na.rm = TRUE)
+ggplot(data=sumdataSE3, aes(x=TonePresence, y=JudgeErrorBL, fill=Block)) +  geom_bar(position=position_dodge(), stat="identity") + geom_errorbar(aes(ymin=JudgeErrorBL-se, ymax=JudgeErrorBL+se), width=.2, position=position_dodge(.9)) + geom_point(position=position_dodge(.9),pch=21, col="black", cex = 4, aes(colour = Block)) + geom_hline(yintercept=0) + ggtitle("All Trials: effect of tone probability in absence and presence of tone\nBar plot showing means & standard errors") + xlab("Presence of Tone") +  ylab("Mean Shift from Baseline [ms]") + scale_fill_brewer(palette="Set1", name="Probability of Tone", breaks=c("Tone0Trials","Tone50Trials", "Tone75Trials"), labels=c("0%", "50%", "75%")) +  theme(axis.title = element_text(face="bold", size=12), axis.text  = element_text(face="bold", size=10), axis.ticks = element_blank())
+```
+
+```{r, echo = FALSE, comment="  ",fig.width =8, fig.height=6,fig.align ='center', warning=FALSE, fig.cap='Box plot'}
+ggplot(data=subset(sumdata, Block != "Tone0Trials"), aes(x=TonePresence, y=JudgeErrorBL, fill=Block)) + stat_boxplot(geom ='errorbar')+ geom_boxplot(outlier.size = 0) + ggtitle("All Trials\nBox plot showing median, IQR and individual datapoints") + xlab("Presence of Tone") +  ylab("Mean Shift from Baseline [ms]") + geom_point(position = position_jitter(w = 0.03, h = 0), pch=21, col="black", cex = 2, alpha = 0.8, aes(colour = Block)) + scale_fill_brewer(palette="Set1", name="Experimental Condition", breaks=c("Tone50Trials", "Tone75Trials"), labels=c("50% Tone probability", "75% Tone probability")) +  theme(axis.title = element_text(face="bold", size=12), axis.text  = element_text(face="bold", size=10), axis.ticks = element_blank())
+```
+
+###Outliers removed - Baseline corrected judgement error
+**Total trails with outlying judgement errors**: `r sum(is.na(sumdata$JudgeErrorOutBL)) - length(sumdata$CleanTrial[sumdata$CleanTrial == FALSE]) `
+
+**Independent sample t test - effect of tone presence**
+```{r, echo = FALSE, comment="  "}
+t.test(JudgeErrorOutBL~TonePresence,data = sumdata)
+```
+
+```{r, echo = FALSE, comment="  ",fig.width =5, fig.height=6,fig.align ='center', warning=FALSE}
+sumdataSE4 <- summarySE(sumdata, measurevar="JudgeErrorOutBL", groupvars="TonePresence", na.rm = TRUE)
+ggplot(data=sumdataSE4, aes(x=TonePresence, y=JudgeErrorOutBL, fill=TonePresence)) +  geom_bar(position=position_dodge(), stat="identity") + geom_errorbar(aes(ymin=JudgeErrorOutBL-se, ymax=JudgeErrorOutBL+se), width=.2, position=position_dodge(.9)) + geom_point(pch=21, col="black", cex = 4, aes(colour = TonePresence)) + geom_hline(yintercept=0) + ggtitle("Outliers removed: Effect of tone presence\nBar plot showing means & standard errors") + xlab("Presence of Tone") +  ylab("Mean Shift from Baseline [ms]") + scale_fill_brewer(palette="Set1", name="Presence of Tone", breaks=c("TRUE", "FALSE"), labels=c("Tone", "No-Tone")) +  theme(axis.title = element_text(face="bold", size=12), axis.text  = element_text(face="bold", size=10), axis.ticks = element_blank())
+```
+
+**ANOVA - effect of tone probability [all 3 blocks - 0%, 50%, 75%]**
+```{r, echo = FALSE, comment="  "}
+summary(aov(JudgeErrorOutBL ~ Block,data = sumdata))
+```
+
+**Independent sample t test - effect of tone probability [2 blocks - 50%, 75%]** 
+```{r, echo = FALSE, comment="  "}
+t.test(JudgeErrorOutBL ~ Block,data = subset(sumdata, Block != "Tone0Trials"))
+```
+
+```{r, echo = FALSE, comment="  ",fig.width =5, fig.height=6,fig.align ='center', warning=FALSE}
+sumdataSE5 <- summarySE(sumdata, measurevar="JudgeErrorOutBL", groupvars="Block", na.rm = TRUE)
+ggplot(data=sumdataSE5, aes(x=Block, y=JudgeErrorOutBL, fill=Block)) +  geom_bar(position=position_dodge(), stat="identity") + geom_errorbar(aes(ymin=JudgeErrorOutBL-se, ymax=JudgeErrorOutBL+se), width=.2, position=position_dodge(.9)) + geom_point(pch=21, col="black", cex = 4, aes(colour = Block)) + geom_hline(yintercept=0) + ggtitle("Outliers removed: Effect of tone probability\nBar plot showing means & standard errors") + xlab("Experimental Condition - Probability of Tone") +  ylab("Mean Shift from Baseline [ms]") + scale_fill_brewer(palette="Set1", name="Probability of Tone", breaks=c("Tone0Trials","Tone50Trials", "Tone75Trials"), labels=c("0%", "50%", "75%")) +  theme(axis.title = element_text(face="bold", size=12), axis.text.y  = element_text(face="bold", size=10), axis.text.x=element_blank(), axis.ticks = element_blank())
+```
+
+###Outliers removed - Baseline corrected judgement error in 'without tone' trials
+
+**ANOVA - effect of tone probability [all 3 blocks - 0%, 50%, 75%]**
+```{r, echo = FALSE, comment="  "}
+summary(aov(JudgeErrorOutBL ~ Block,data = subset(sumdata, TonePresence == FALSE)))
+```
+
+**Independent sample t test - effect of tone probability [2 blocks - 50%, 75%]**
+```{r, echo = FALSE, comment="  "}
+t.test(JudgeErrorOutBL~Block,data = subset(sumdata, (TonePresence == FALSE & Block != "Tone0Trials")))
+```
+
+###Outliers removed - Baseline corrected judgement error in 'with tone' trials  
+
+**ANOVA - effect of tone probability [all 3 blocks - 0%, 50%, 75%]**
+```{r, echo = FALSE, comment="  "}
+summary(aov(JudgeErrorOutBL ~ Block,data = subset(sumdata, TonePresence == TRUE)))
+```
+
+**Independent sample t test - effect of tone probability [2 blocks - 50%, 75%]**
+```{r, echo = FALSE, comment="  "}
+t.test(JudgeErrorOutBL~Block,data = subset(sumdata, (TonePresence == TRUE & Block != "Tone0Trials")))
+```
+
+```{r, echo = FALSE, comment="  ",fig.width =8, fig.height=6,fig.align ='center', warning=FALSE}
+sumdataSE6 <- summarySE(sumdata, measurevar="JudgeErrorOutBL", groupvars=c("TonePresence","Block"), na.rm = TRUE)
+ggplot(data=sumdataSE6, aes(x=TonePresence, y=JudgeErrorOutBL, fill=Block)) +  geom_bar(position=position_dodge(), stat="identity") + geom_errorbar(aes(ymin=JudgeErrorOutBL-se, ymax=JudgeErrorOutBL+se), width=.2, position=position_dodge(.9)) + geom_point(position=position_dodge(.9),pch=21, col="black", cex = 4, aes(colour = Block)) + geom_hline(yintercept=0) + ggtitle("Outliers removed: effect of tone probability in absence and presence of tone\nBar plot showing means & standard errors") +  xlab("Presence of Tone") +  ylab("Mean Shift from Baseline [ms]") + scale_fill_brewer(palette="Set1", name="Probability of Tone", breaks=c("Tone0Trials","Tone50Trials", "Tone75Trials"), labels=c("0%", "50%", "75%")) +  theme(axis.title = element_text(face="bold", size=12), axis.text  = element_text(face="bold", size=10), axis.ticks = element_blank())
+```
+
+```{r, echo = FALSE, comment="  ",fig.width =8, fig.height=6,fig.align ='center', warning=FALSE, fig.cap='Box plot'}
+ggplot(data=subset(sumdata, Block != "Tone0Trials"), aes(x=TonePresence, y=JudgeErrorOutBL, fill=Block)) + stat_boxplot(geom ='errorbar')+ geom_boxplot(outlier.size = 0) +  ggtitle("Outliers removed\nBox plot showing median, IQR and individual datapoints") + xlab("Presence of Tone") +  ylab("Mean Shift from Baseline [ms]") + geom_point(position = position_jitter(w = 0.03, h = 0), pch=21, col="black", cex = 2, alpha = 0.8, aes(colour = Block)) + scale_fill_brewer(palette="Set1", name="Experimental Condition", breaks=c("Tone50Trials", "Tone75Trials"), labels=c("50% Tone probability", "75% Tone probability")) +  theme(axis.title = element_text(face="bold", size=12), axis.text  = element_text(face="bold", size=10), axis.ticks = element_blank())
+```
