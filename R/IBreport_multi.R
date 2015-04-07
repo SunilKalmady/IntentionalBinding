@@ -32,8 +32,7 @@
 #'}
 
 IBreport_multi <- function() {
-  file_list <- c("Brain2010-IB-0_50_75_Mar26-Aditi-3-1.edat2.txt_SummaryData.csv", "Brain2010-IB-0_50_75_Mar26-Asouk-1-1.edat2.txt_SummaryData.csv")
-  # file_list <- grep('SummaryData.csv$',list.files(),value=TRUE)
+  file_list <- grep('SummaryData.csv$',list.files(),value=TRUE)
   dataset <- do.call("rbind", lapply(file_list, FUN = function(files) {
     read.table(files, header = TRUE, sep = ",")
   }))
