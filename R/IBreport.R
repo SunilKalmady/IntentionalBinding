@@ -4,8 +4,6 @@
 #' @references \url{www.transpsychlab.org}
 #' @author Sunil V Kalmady
 #' @import ggplot2
-#' @import grid
-#' @import gridExtra
 #' @import markdown
 #' @import knitr
 #' @export 

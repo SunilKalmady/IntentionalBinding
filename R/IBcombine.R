@@ -1,0 +1,54 @@
+#' @title IBcombine
+#' @description Combine Intentional Binding summary data from multiple subjects.
+#' @details IBsummary should be run first and more than one SummaryData.csv files should be available. One or more individual 
+#' SummaryData csvs can also be recombined into already combined and munged dataset.
+#' @references \url{www.transpsychlab.org}
+#' @author Sunil V Kalmady
+#' @export 
+#' @param flist List of SummaryData filenames to be combined. Alternatively all the files in path can be combined using \code{all} 
+#' @param all A boolean that indicates whether to all combine all SummaryData csv in the current directory (FALSE by Default) 
+#'  @examples
+#'\dontrun{
+#' # A general example
+#' IBsummary("Brain2010-IB-0_50_75-A-3-1.edat2.txt")
+#' IBsummary("Brain2010-IB-0_50_75-H-3-1.edat2.txt")
+#' IBsummary("Brain2010-IB-0_50_75-F-3-1.edat2.txt")
+#' IBsummary("Brain2010-IB-0_50_75-C-3-1.edat2.txt")
+#' 
+#' # Combine the SummaryData output from all four files
+#' IBcombine(all = TRUE)
+#' # Combine SummaryData output from selected two files
+#' IBcombine(flist = c("Brain2010-IB-0_50_75-A-3-1.edat2.txt_SummaryData.csv","Brain2010-IB-0_50_75-H-3-1.edat2.txt_SummaryData.csv"))
+#' 
+#' # Try out the example data provided with the package 
+#' # copy multiple txt files - A.edat2.txt, H.edat2.txt etc to working directory (manually or using codes below)
+#' srcpath <- system.file("extdata/", package = "IntentionalBinding")
+#' flst <- list.files(srcpath, ".txt$", full.names = TRUE)
+#' destpath <- getwd()
+#' file.copy(flst, destpath)
+#' 
+#' #Run Intentional binding summary function 
+#' IBsummary("A.edat2.txt")
+#' IBsummary("H.edat2.txt")
+#' IBsummary("F.edat2.txt")
+#' IBsummary("C.edat2.txt")
+#' 
+#'# Combine the SummaryData output from all four files
+#' IBcombine(all = TRUE)
+#'# Combine SummaryData output from selected two files
+#' IBcombine(flist = c("A.edat2.txt_SummaryData.csv","H.edat2.txt_SummaryData.csv"))
+#'}
+
+IBcombine <- function(all=FALSE, flist = NULL) {
+  if (all){
+    file_list <- grep('SummaryData.csv$',list.files(),value=TRUE)
+  } else {
+    file_list <- flist
+  }
+  dataset <- do.call("rbind", lapply(file_list, FUN = function(files) {
+    read.table(files, header = TRUE, sep = ",")
+  }))
+  write.csv(file = paste0(length(file_list), "files_SummaryData_Combined.csv"), x = dataset, row.names = FALSE)
+}
+
+
