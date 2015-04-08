@@ -7,7 +7,7 @@
 IBcombine(all = FALSE, flist = NULL)
 }
 \arguments{
-\item{all}{A boolean that indicates whether to all combine all SummaryData csv in the current directory (FALSE by Default)}
+\item{all}{A boolean that indicates whether to combine all SummaryData csv in the current directory (FALSE by Default)}
 
 \item{flist}{List of SummaryData filenames to be combined. Alternatively all the files in path can be combined using \code{all}}
 }

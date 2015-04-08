@@ -2,7 +2,7 @@
 #' @description Generate detailed HTML markdown report from Intentional Binding summary data for multiple subjects.
 #' @details Combined dataset with more than one SummaryData.csv files should be available (use IBcombine to achieve this). 
 #' Atleast 2 subjects in each group should be available for statisical analysis.
-#' Dataset aggregated by Subject/Block/Tone presence is also generated along with column indicating potential outliers.
+#' In addition to detailed report, a dataset aggregated by Subject/Block/Tone-presence is also generated along with column indicating potential outliers.
 #' @references \url{www.transpsychlab.org}
 #' @author Sunil V Kalmady
 #' @import ggplot2
@@ -10,7 +10,7 @@
 #' @import knitr
 #' @export 
 #' @param flname Filename of the dataset combining more than one SummaryData.csv files. 
-#' @note The plots use factor level of Status: 'Cntrl'& 'SCZ' and labels them as  Healthy controls & Schizophrenia patients respectively.  
+#' @note The plots use factor level of Status: 'Cntrl' & 'SCZ' and labels them as  Healthy controls & Schizophrenia patients respectively.  
 #'  @examples
 #'\dontrun{
 #'# Try out the example data provided with the package 

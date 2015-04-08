@@ -15,10 +15,10 @@ Generate detailed HTML markdown report from Intentional Binding summary data for
 \details{
 Combined dataset with more than one SummaryData.csv files should be available (use IBcombine to achieve this).
 Atleast 2 subjects in each group should be available for statisical analysis.
-Dataset aggregated by Subject/Block/Tone presence is also generated along with column indicating potential outliers.
+In addition to detailed report, a dataset aggregated by Subject/Block/Tone-presence is also generated along with column indicating potential outliers.
 }
 \note{
-The plots use factor level of Status: 'Cntrl'& 'SCZ' and labels them as  Healthy controls & Schizophrenia patients respectively.
+The plots use factor level of Status: 'Cntrl' & 'SCZ' and labels them as  Healthy controls & Schizophrenia patients respectively.
 }
 \examples{
 \dontrun{

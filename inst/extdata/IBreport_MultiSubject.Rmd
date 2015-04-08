@@ -10,7 +10,11 @@ This is a multiple-subject report for Intentional Binding paradigm [Brain 2010].
 
 **Data:** `r flname`
 
-**Total Trails with missing data**: `r length(dataset$CleanTrial[dataset$CleanTrial == FALSE]) `
+**Total Trails with missing data**: `r length(dataset$CleanTrial[dataset$CleanTrial == FALSE])
+
+**N - Healthy Controls:** `r length(dataSE1$Status[dataSE1$Status=='Cntrl'])/2
+**N - Schizophrenia Patients:** `r length(dataSE1$Status[dataSE1$Status=='SCZ'])/2
+**Total N:** `r length(dataSE1$Status)/2 
 
 ###Mixed design ANOVA with Status as between-subjects factor and experimental conditions as within-subjects factor
 

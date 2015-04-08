@@ -6,7 +6,7 @@
 #' @author Sunil V Kalmady
 #' @export 
 #' @param flist List of SummaryData filenames to be combined. Alternatively all the files in path can be combined using \code{all} 
-#' @param all A boolean that indicates whether to all combine all SummaryData csv in the current directory (FALSE by Default) 
+#' @param all A boolean that indicates whether to combine all SummaryData csv in the current directory (FALSE by Default) 
 #'  @examples
 #'\dontrun{
 #' # A general example
