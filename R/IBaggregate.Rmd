@@ -1,0 +1,54 @@
+---
+  title: "Intentional Binding Report - Multiple Subjects"
+author: "Transpsychlab (www.transpsychlab.org)"
+output:
+  html_document:
+  theme: united
+---
+  
+This is a multiple-subject report for Intentional Binding paradigm [Brain 2010].
+
+**Data:** `r fname`
+  
+  dataset <- read.table(fname, sep = ",", header = TRUE)
+  
+  #Aggregate and restructure
+  
+  #Dataset 1 - aggregate by Subject, status and tone presence
+  dataSE1 <- summarySE(dataset, measurevar="JudgeErrorOutBL", groupvars=c("Name","Status","TonePresence"), na.rm = TRUE)
+  
+  #Dataset 2 - aggregate by Subject, status and tone probability
+  dataSE2 <- summarySE(dataset, measurevar="JudgeErrorOutBL", groupvars=c("Name","Status","Block"), na.rm = TRUE)
+  
+  #Dataset 3 - aggregate by Subject, status, tone  presence and tone probability
+  dataSE3 <- summarySE(dataset, measurevar="JudgeErrorOutBL", groupvars=c("Name","Status","Block","TonePresence"), na.rm = TRUE)
+  
+ #Mixed design ANOVA
+ 
+ # Effect of Status and Tone presence
+ aov_status_tonepre <- aov(JudgeErrorOutBL ~ Status*TonePresence + Error(Name/TonePresence), data=dataSE1)
+ summary(aov_status_tonepre)
+ 
+ #Effect of Status and Tone probability
+ aov_status_toneprb <- aov(JudgeErrorOutBL ~ Status*Block + Error(Name/Block), data=dataSE2)
+ summary(aov_status_toneprb)
+ 
+ # 'with tone' - effect of block
+ aov_status_toneprb_wtone <- aov(JudgeErrorOutBL ~ Status*Block + Error(Name/Block), data = subset(dataSE3, TonePresence == TRUE))
+ summary(aov_status_toneprb_wtone)
+ 
+ #within experimental blocks - 50 and 75 -- same as above - remove
+ 
+ aov_status_toneprb_wtone_5075 <- aov(JudgeErrorOutBL ~ Status*Block + Error(Name/Block), data = subset(dataSE3, TonePresence == TRUE & Block != "Tone0Trials"))
+ summary(aov_status_toneprb_wtone_5075)
+ 
+ # 'without tone' - effect of block
+ aov_status_toneprb_wotone <- aov(JudgeErrorOutBL ~ Status*Block + Error(Name/Block), data = subset(dataSE3, TonePresence == FALSE))
+ summary(aov_status_toneprb_wotone)
+ 
+ #within experimental blocks - 50 and 75
+ 
+ aov_status_toneprb_wotone_5075 <- aov(JudgeErrorOutBL ~ Status*Block + Error(Name/Block), data = subset(dataSE3, TonePresence == FALSE & Block != "Tone0Trials"))
+ summary(aov_status_toneprb_wotone_5075)
+ 
+

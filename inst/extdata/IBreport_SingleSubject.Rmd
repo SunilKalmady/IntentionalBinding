@@ -53,11 +53,6 @@ t.test(JudgeErrorBL~Block,data = subset(sumdata, (TonePresence == FALSE & Block 
 
 ###Baseline corrected judgement error in 'with tone' trials
 
-**ANOVA - effect of tone probability [all 3 blocks - 0%, 50%, 75%]**
-```{r, echo = FALSE, comment="  "}
-summary(aov(JudgeErrorBL ~ Block,data = subset(sumdata, TonePresence == TRUE)))
-```
-
 **Independent sample t test - effect of tone probability [2 blocks - 50%, 75%]**
 ```{r, echo = FALSE, comment="  "}
 t.test(JudgeErrorBL~Block,data = subset(sumdata, (TonePresence == TRUE & Block != "Tone0Trials")))
