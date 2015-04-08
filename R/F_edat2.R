@@ -3,7 +3,7 @@
 #' Representative data for trying out the package functions.
 #' This data in raw format can be located in extdata subfolder of Intentional Binding package directory.
 #' 
-#' @name A_edat2
+#' @name F_edat2
 #' @docType data
 #' @author Transpsych Lab 
 #' @references \url{www.transpsychlab.org}
