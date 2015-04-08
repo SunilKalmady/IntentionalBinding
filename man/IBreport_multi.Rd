@@ -4,36 +4,42 @@
 \alias{IBreport_multi}
 \title{IBreport_multi}
 \usage{
-IBreport_multi()
+IBreport_multi(flname)
 }
 \arguments{
-\item{fname}{Filename of unicode tab-delimited text from e-prime experiment output.}
+\item{flname}{Filename of the dataset combining more than one SummaryData.csv files.}
 }
 \description{
 Generate detailed HTML markdown report from Intentional Binding summary data for multiple subjects.
 }
 \details{
-IBsummary should be run first and more than one SummaryData.csv files should be available.
-Table of combined dataset is also generated.
+Combined dataset with more than one SummaryData.csv files should be available (use IBcombine to achieve this).
+Atleast 2 subjects in each group should be available for statisical analysis.
+Dataset aggregated by Subject/Block/Tone presence is also generated along with column indicating potential outliers.
+}
+\note{
+The plots use factor level of Status: 'Cntrl'& 'SCZ' and labels them as  Healthy controls & Schizophrenia patients respectively.
 }
 \examples{
 \dontrun{
-# A general example
-IBsummary("Brain2010-IB-0_50_75-A-3-1.edat2.txt")
-IBsummary("Brain2010-IB-0_50_75-H-3-1.edat2.txt")
-IBreport_multi()
-
 # Try out the example data provided with the package
-# copy multiple txt files - A.edat2.txt and H.edat2.txt to working directory (manually or using codes below)
+# copy multiple txt files - A.edat2.txt, H.edat2.txt etc to working directory (manually or using codes below)
 srcpath <- system.file("extdata/", package = "IntentionalBinding")
-flist <- list.files(srcpath, ".txt$", full.names = TRUE)
+flst <- list.files(srcpath, ".txt$", full.names = TRUE)
 destpath <- getwd()
-file.copy(flist, destpath)
+file.copy(flst, destpath)
 
-#Run multisubject Intentional binding report
+#Run Intentional binding summary function
 IBsummary("A.edat2.txt")
 IBsummary("H.edat2.txt")
-IBreport_multi()
+IBsummary("F.edat2.txt")
+IBsummary("C.edat2.txt")
+
+# Combine the SummaryData output from all four files
+IBcombine(all = TRUE)
+
+# Now you are ready to run multisubject report on combined summary data.
+IBreport_multi("4files_SummaryData_Combined.csv")
 }
 }
 \author{
